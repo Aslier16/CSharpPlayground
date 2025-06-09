@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
@@ -6,6 +7,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CSharpPlayground.Models;
 
 namespace CSharpPlayground.ViewModels;
 
@@ -15,25 +17,68 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] private string _code = "";
     [ObservableProperty] private string _scriptOutput = "";
     [ObservableProperty] private bool _isCopilotExpanded = false;
+    [ObservableProperty] private double _timeConsumed = 0;
 
     [RelayCommand]
     private async Task OpenFileAsync()
     {
-        var files =  await OpenFilePicker();
+        var files = await OpenFilePicker();
 
-            var path = files[0].TryGetLocalPath();
-            if (path is not null)
-            {
-                Code = await File.ReadAllTextAsync(path);
-            }
+        var path = files[0].TryGetLocalPath();
+        if (path is not null)
+        {
+            Code = await File.ReadAllTextAsync(path);
+        }
     }
 
     [RelayCommand]
-    private async Task SwitchCopilotExpander()
+    private async Task SaveFileAsync()
+    {
+        var file = await SaveFilePicker();
+
+        if (file != null)
+        {
+            var path = file.Path.LocalPath;
+            await File.WriteAllTextAsync(path, Code);
+        }
+    }
+
+    private async Task<IStorageFile> SaveFilePicker()
+    {
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            if (desktop.MainWindow != null)
+            {
+                var file = await desktop.MainWindow.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+                {
+                    Title = "保存脚本文件",
+                    DefaultExtension = "cs",
+                    SuggestedFileName = "NewScript",
+                    FileTypeChoices = [new FilePickerFileType("C#代码") { Patterns = ["*.cs"] }]
+                });
+                return file;
+            }
+        }
+        return null;
+    }
+
+
+    [RelayCommand]
+    private void SwitchCopilotExpander()
     {
         IsCopilotExpanded = !IsCopilotExpanded;
     }
-    
+
+    [RelayCommand]
+    private async Task ExecuteScriptAsync()
+    {
+        ScriptOutput = "正在执行脚本...";
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        ScriptOutput = await ScriptExecutor.ExecuteScript(Code);
+        stopwatch.Stop();
+        TimeConsumed = stopwatch.Elapsed.TotalSeconds;
+    }
+
     private async Task<IReadOnlyList<IStorageFile>> OpenFilePicker()
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -44,11 +89,12 @@ public partial class MainWindowViewModel : ViewModelBase
                 {
                     Title = "打开脚本文件",
                     AllowMultiple = false,
-                    FileTypeFilter = [new FilePickerFileType("C#代码文件"){Patterns = ["*.cs"] }]
+                    FileTypeFilter = [new FilePickerFileType("C#代码") { Patterns = ["*.cs"] }]
                 });
                 return files;
             }
         }
+
         return null;
     }
 }
