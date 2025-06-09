@@ -1,0 +1,61 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:CSharpPlayground.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignWidth="800"
+    d:DesignHeight="450"
+    x:Class="CSharpPlayground.Views.MainWindow"
+    x:DataType="vm:MainWindowViewModel"
+    Icon="/Assets/avalonia-logo.ico"
+    Title="CSharpPlayground">
+
+    <Design.DataContext>
+        <!--
+            This only sets the DataContext for the previewer in an IDE,
+            to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs)
+        -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top">
+            <Menu>
+                <MenuItem Header="文件">
+                    <MenuItem Header="打开" Command="{Binding OpenFileCommand}" />
+                    <MenuItem Header="保存" />
+                    <MenuItem Header="另存为" />
+                </MenuItem>
+            </Menu>
+            <Grid>
+                <!-- <Image Source="../Assets/Picture/Maple Mono Normal NF CN Medium - U+EBA6.png" Stretch="UniformToFill" Height="5" Width="5" /> -->
+                <Button Content="运行" />
+                <Button HorizontalAlignment="Right" Content="Copilot" Command="{Binding SwitchCopilotExpanderCommand}" />
+            </Grid>
+        </StackPanel>
+        <Grid DockPanel.Dock="Bottom">
+            <TextBlock Text="Status" />
+        </Grid>
+        <Grid ColumnDefinitions="6*,Auto,3*,Auto,Auto">
+            <TextBox Grid.Column="0" Text="{Binding Code}" />
+            <GridSplitter Grid.Column="1" />
+            <Grid Grid.Column="2">
+                <TextBlock Text="{Binding ScriptOutput}" />
+            </Grid>
+            <GridSplitter Grid.Column="3" />
+            <DockPanel Grid.Column="4" IsVisible="{Binding IsCopilotExpanded}">
+                <StackPanel DockPanel.Dock="Bottom">
+                    <TextBox>Send</TextBox>
+                    <Button Content="发送" HorizontalAlignment="Right" />
+                </StackPanel>
+                <StackPanel>
+                    <Grid Margin="4,4,18,4">
+                        <Rectangle Stroke="Gray" Margin="-2" StrokeThickness="2" Fill="Transparent" />
+                        <TextBlock Text="Sample" FontFamily="Maple Mono Normal NF CN" />
+                    </Grid>
+                </StackPanel>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
+</Window>
