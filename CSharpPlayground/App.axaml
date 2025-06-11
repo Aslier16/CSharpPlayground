@@ -11,10 +11,11 @@
     </Application.DataTemplates>
 
     <Application.Resources>
-        <FontFamily x:Key="Maple">avares://CSharpPlayground/Assets/Fonts/MapleMonoNormal-NF-CN-Medium.ttf</FontFamily>
+        <FontFamily x:Key="ConsolasNf">avares://CSharpPlayground/Assets/Fonts/ConsolasNerdFontMono-Regular.ttf#Consolas Nerd Font Mono</FontFamily>
     </Application.Resources>
 
     <Application.Styles>
         <FluentTheme />
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
     </Application.Styles>
 </Application>
