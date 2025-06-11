@@ -11,7 +11,7 @@
     </Application.DataTemplates>
 
     <Application.Resources>
-        <FontFamily x:Key="Maple">avares://CSharpPlayground/Assets/Fonts/MapleMonoNormal-NF-CN-Medium.ttf#Maple Mono Normal NF CN Medium</FontFamily>
+        <FontFamily x:Key="Maple">avares://CSharpPlayground/Assets/Fonts/MapleMonoNormal-NF-CN-Medium.ttf</FontFamily>
     </Application.Resources>
 
     <Application.Styles>

@@ -19,6 +19,13 @@
         -->
         <vm:MainWindowViewModel />
     </Design.DataContext>
+
+    <Window.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="FontSize" Value="{Binding FontSize}" />
+            <Setter Property="FontFamily" Value="Maple Mono Normal NF CN" />
+        </Style>
+    </Window.Styles>
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
             <Menu>
@@ -36,7 +43,16 @@
         </StackPanel>
         <Grid DockPanel.Dock="Bottom">
             <TextBlock Text="{Binding TimeConsumed, StringFormat='耗时 {0}s'}" />
-
+            <Grid>
+                <!-- <TextBlock Text="11" /> -->
+                <Slider
+                    HorizontalAlignment="Right"
+                    Value="{Binding FontSize}"
+                    Minimum="1"
+                    Maximum="30"
+                    Width="100"
+                    Margin="0,0,20,0" />
+            </Grid>
         </Grid>
         <Grid ColumnDefinitions="6*,Auto,3*,Auto,Auto">
             <ScrollViewer>
@@ -44,7 +60,9 @@
             </ScrollViewer>
             <GridSplitter Grid.Column="1" />
             <Grid Grid.Column="2">
-                <TextBlock Text="{Binding ScriptOutput}" Background="#FFE4EEFF" />
+                <ScrollViewer>
+                    <TextBlock Text="{Binding ScriptOutput}" Background="#FFE4EEFF" />
+                </ScrollViewer>
             </Grid>
             <GridSplitter Grid.Column="3" />
             <DockPanel Grid.Column="4" IsVisible="{Binding IsCopilotExpanded}">
@@ -55,7 +73,7 @@
                 <StackPanel>
                     <Grid Margin="4,4,18,4">
                         <Rectangle Stroke="Gray" Margin="-2" StrokeThickness="2" Fill="Transparent" />
-                        <TextBlock Text="Sample" FontFamily="Maple Mono Normal NF CN" />
+                        <TextBlock Text="Sample" FontFamily="Maple Mono Normal NF CN Medium" />
                     </Grid>
                 </StackPanel>
             </DockPanel>

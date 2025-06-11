@@ -18,6 +18,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] private string _scriptOutput = "";
     [ObservableProperty] private bool _isCopilotExpanded = false;
     [ObservableProperty] private double _timeConsumed = 0;
+    [ObservableProperty] private double _fontSize = 14;
 
     [RelayCommand]
     private async Task OpenFileAsync()
