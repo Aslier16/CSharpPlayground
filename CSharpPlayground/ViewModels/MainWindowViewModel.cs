@@ -14,7 +14,12 @@ namespace CSharpPlayground.ViewModels;
 public partial class MainWindowViewModel : ViewModelBase
 {
     // public string Greeting { get; } = "Welcome to Avalonia!";
-    [ObservableProperty] private string _code = "";
+    [ObservableProperty] private string _code = """
+                                                Console.WriteLine("Hello, World!");
+                                                1.Dump();
+                                                var list = new List<int> { 1, 2, 3, 4, 5 };
+                                                list.Dump();
+                                                """;
     [ObservableProperty] private string _scriptOutput = "";
     [ObservableProperty] private bool _isCopilotExpanded = false;
     [ObservableProperty] private double _timeConsumed = 0;

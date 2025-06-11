@@ -26,41 +26,51 @@ public static class PlaygroundExtension
         var type = input.GetType();
         var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        
+
         var sb = new StringBuilder();
-        sb.AppendLine($"Type: {type.Name}");
-        
-        sb.AppendLine("Fields\tValue");
-        if (fields.Length > 0)
+        try
         {
-            foreach (var field in fields)
+            sb.AppendLine($"Type: {type.Name}");
+
+            sb.AppendLine("Fields\tValue");
+            if (fields.Length > 0)
             {
-                var value = field.GetValue(input);
-                sb.AppendLine($"{field.Name}\t{value}");
-            }
-        }
-        else
-        {
-            sb.AppendLine("No fields available.");
-        }
-        
-        sb.AppendLine("Properties\tValue");
-        if (properties.Length > 0)
-        {
-            foreach (var property in properties)
-            {
-                if (property.CanRead)
+                foreach (var field in fields)
                 {
-                    var value = property.GetValue(input);
-                    sb.AppendLine($"{property.Name}: {value}");
+                    var value = field.GetValue(input);
+                    sb.AppendLine($"{field.Name}\t{value}");
                 }
             }
+            else
+            {
+                sb.AppendLine("No fields available.");
+            }
+
+            sb.AppendLine("Properties\tValue");
+            if (properties.Length > 0)
+            {
+                foreach (var property in properties)
+                {
+                    if (property.CanRead && property.GetIndexParameters().Length == 0)
+                    {
+                        var value = property.GetValue(input);
+                        sb.AppendLine($"{property.Name}: {value}");
+                    }
+                }
+            }
+            else
+            {
+                sb.AppendLine("无属性或属性不可见.");
+            }
         }
-        else
+        catch (Exception e)
         {
-            sb.AppendLine("无属性或属性不可见.");
+            Console.WriteLine(e);
         }
-        Console.WriteLine(sb.ToString());
+        finally
+        {
+            Console.WriteLine(sb.ToString());
+        }
 
         return input;
     }
@@ -80,4 +90,5 @@ public static class PlaygroundExtension
         Console.WriteLine(sb.ToString());
         return input;
     }
+    
 }
