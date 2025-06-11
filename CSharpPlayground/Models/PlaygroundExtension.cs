@@ -30,23 +30,23 @@ public static class PlaygroundExtension
         var sb = new StringBuilder();
         try
         {
-            sb.AppendLine($"Type: {type.Name}");
+            sb.AppendLine($"### Type: {type.Namespace}.{type.Name}");
 
-            sb.AppendLine("Fields\tValue");
+            sb.AppendLine("| Fields | Value |" + Environment.NewLine + "|--------|-------|");
             if (fields.Length > 0)
             {
                 foreach (var field in fields)
                 {
                     var value = field.GetValue(input);
-                    sb.AppendLine($"{field.Name}\t{value}");
+                    sb.AppendLine($"| {field.Name} | {value} |");
                 }
             }
             else
             {
-                sb.AppendLine("No fields available.");
+                sb.AppendLine("| No fields available. |");
             }
 
-            sb.AppendLine("Properties\tValue");
+            sb.AppendLine(Environment.NewLine + "| Properties | Value |" + Environment.NewLine + "|--------|-------|");
             if (properties.Length > 0)
             {
                 foreach (var property in properties)
@@ -54,13 +54,13 @@ public static class PlaygroundExtension
                     if (property.CanRead && property.GetIndexParameters().Length == 0)
                     {
                         var value = property.GetValue(input);
-                        sb.AppendLine($"{property.Name}: {value}");
+                        sb.AppendLine($"| {property.Name} | {value} |");
                     }
                 }
             }
             else
             {
-                sb.AppendLine("无属性或属性不可见.");
+                sb.AppendLine("| 无属性或属性不可见. |");
             }
         }
         catch (Exception e)

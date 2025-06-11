@@ -15,6 +15,7 @@
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.3.0"/>
+        <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
         <PackageReference Include="Avalonia.Desktop" Version="11.3.0"/>
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.0"/>
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.0"/>
@@ -23,9 +24,12 @@
             <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
+        <PackageReference Include="AvaloniaEdit.TextMate" Version="11.3.0" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
+        <PackageReference Include="Markdown.Avalonia" Version="11.0.2" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.14.0" />
         <PackageReference Include="System.Text.Json" Version="9.0.5" />
+        <PackageReference Include="TextMateSharp.Grammars" Version="1.0.69" />
     </ItemGroup>
 </Project>

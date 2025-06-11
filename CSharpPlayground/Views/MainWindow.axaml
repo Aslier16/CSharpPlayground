@@ -4,6 +4,8 @@
     xmlns:vm="using:CSharpPlayground.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="using:Markdown.Avalonia"
+    xmlns:ae="using:AvaloniaEdit"
     mc:Ignorable="d"
     d:DesignWidth="800"
     d:DesignHeight="450"
@@ -21,23 +23,23 @@
     </Design.DataContext>
 
     <Window.Styles>
-        <Style Selector="TextBox">
+        <Style Selector="ae|TextEditor">
             <Setter Property="FontSize" Value="{Binding FontSize}" />
-            <Setter Property="FontFamily" Value="Maple Mono Normal NF CN" />
+            <Setter Property="FontFamily" Value="{StaticResource Maple}" />
         </Style>
     </Window.Styles>
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
             <Menu>
                 <MenuItem Header="文件">
-                    <MenuItem Header="打开" Command="{Binding OpenFileCommand}" />
-                    <MenuItem Header="保存" Command="{Binding SaveFileCommand}" />
+                    <MenuItem Header="打开" Command="{Binding OpenFileCommand}" HotKey="Ctrl+O" />
+                    <MenuItem Header="保存" Command="{Binding SaveFileCommand}" HotKey="Ctrl+S" />
                     <!-- <MenuItem Header="另存为" /> -->
                 </MenuItem>
             </Menu>
             <Grid>
                 <!-- <Image Source="../Assets/Picture/Maple Mono Normal NF CN Medium - U+EBA6.png" Stretch="UniformToFill" Height="5" Width="5" /> -->
-                <Button Content="运行" Command="{Binding ExecuteScriptCommand}" />
+                <Button Content="运行" Command="{Binding ExecuteScriptCommand}" HotKey="F5" />
                 <Button HorizontalAlignment="Right" Content="Copilot" Command="{Binding SwitchCopilotExpanderCommand}" />
             </Grid>
         </StackPanel>
@@ -56,13 +58,40 @@
         </Grid>
         <Grid ColumnDefinitions="6*,Auto,3*,Auto,Auto">
             <ScrollViewer>
-                <TextBox Grid.Column="0" Text="{Binding Code}" AcceptsReturn="True" />
+                <Grid>
+                    <!--  <TextBlock  -->
+                    <!--  Grid.Column="0"  -->
+                    <!--  Name="LineNumberBlock"  -->
+                    <!--  Text="{Binding LineNumberString}"  -->
+                    <!--  HorizontalAlignment="Right"  -->
+                    <!--  Margin="0,7.5,0,0" />  -->
+                    <!-- <GridSplitter Grid.Column="1" /> -->
+                    <!-- <TextBox Name="CodeEditor" Grid.Column="2" Text="{Binding Code}" AcceptsReturn="True" /> -->
+
+                    <ae:TextEditor
+                        Grid.Column="0"
+                        Name="CodeEditor"
+                        Text=""
+                        ShowLineNumbers="True"
+                        SyntaxHighlighting="C#"
+                        TextChanged="CodeEditor_OnTextChanged"
+                        AttachedToVisualTree="CodeEditor_OnAttachedToVisualTree"
+                        FontFamily="Consolas" />
+                </Grid>
             </ScrollViewer>
             <GridSplitter Grid.Column="1" />
             <Grid Grid.Column="2">
-                <ScrollViewer>
-                    <TextBlock Text="{Binding ScriptOutput}" Background="#FFE4EEFF" />
-                </ScrollViewer>
+                <!-- <ScrollViewer> -->
+                <!--    -->
+                <!--  <TextBox  -->
+                <!--  Text="{Binding ScriptOutput}"  -->
+                <!--  Background="#FFE4EEFF"  -->
+                <!--  IsReadOnly="True"  -->
+                <!--  BorderThickness="0"  -->
+                <!--  IsTabStop="False"  -->
+                <!--  AcceptsReturn="True" />  -->
+                <!-- </ScrollViewer> -->
+                <md:MarkdownScrollViewer Markdown="{Binding ScriptOutput}" />
             </Grid>
             <GridSplitter Grid.Column="3" />
             <DockPanel Grid.Column="4" IsVisible="{Binding IsCopilotExpanded}">
@@ -73,7 +102,7 @@
                 <StackPanel>
                     <Grid Margin="4,4,18,4">
                         <Rectangle Stroke="Gray" Margin="-2" StrokeThickness="2" Fill="Transparent" />
-                        <TextBlock Text="Sample" FontFamily="Maple Mono Normal NF CN Medium" />
+                        <TextBlock Text="Sample" />
                     </Grid>
                 </StackPanel>
             </DockPanel>
