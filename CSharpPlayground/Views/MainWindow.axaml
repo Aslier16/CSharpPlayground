@@ -25,7 +25,7 @@
     <Window.Styles>
         <Style Selector="ae|TextEditor">
             <Setter Property="FontSize" Value="{Binding FontSize}" />
-            <Setter Property="FontFamily" Value="{StaticResource Maple}" />
+            <Setter Property="FontFamily" Value="{StaticResource ConsolasNf}" />
         </Style>
     </Window.Styles>
     <DockPanel>
@@ -38,8 +38,15 @@
                 </MenuItem>
             </Menu>
             <Grid>
-                <!-- <Image Source="../Assets/Picture/Maple Mono Normal NF CN Medium - U+EBA6.png" Stretch="UniformToFill" Height="5" Width="5" /> -->
-                <Button Content="运行" Command="{Binding ExecuteScriptCommand}" HotKey="F5" />
+                <Button
+                    Content=""
+                    Background="Transparent"
+                    Foreground="SeaGreen"
+                    FontFamily="{StaticResource ConsolasNf}"
+                    FontSize="18"
+                    FontWeight="ExtraBold"
+                    Command="{Binding ExecuteScriptCommand}"
+                    HotKey="F5" />
                 <Button HorizontalAlignment="Right" Content="Copilot" Command="{Binding SwitchCopilotExpanderCommand}" />
             </Grid>
         </StackPanel>
@@ -75,8 +82,7 @@
                         ShowLineNumbers="True"
                         SyntaxHighlighting="C#"
                         TextChanged="CodeEditor_OnTextChanged"
-                        AttachedToVisualTree="CodeEditor_OnAttachedToVisualTree"
-                        FontFamily="Consolas" />
+                        AttachedToVisualTree="CodeEditor_OnAttachedToVisualTree" />
                 </Grid>
             </ScrollViewer>
             <GridSplitter Grid.Column="1" />
