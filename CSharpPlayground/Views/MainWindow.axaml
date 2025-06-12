@@ -7,12 +7,16 @@
     xmlns:md="using:Markdown.Avalonia"
     xmlns:ae="using:AvaloniaEdit"
     mc:Ignorable="d"
+    Width="1280"
+    Height="720"
     d:DesignWidth="800"
     d:DesignHeight="450"
     x:Class="CSharpPlayground.Views.MainWindow"
     x:DataType="vm:MainWindowViewModel"
     Icon="/Assets/avalonia-logo.ico"
-    Title="CSharpPlayground">
+    Title="CSharpPlayground"
+    TransparencyLevelHint="AcrylicBlur"
+    Background="{Binding WindowOpacityBrush}">
 
     <Design.DataContext>
         <!--
@@ -28,82 +32,88 @@
             <Setter Property="FontFamily" Value="{StaticResource ConsolasNf}" />
         </Style>
     </Window.Styles>
-    <DockPanel>
-        <StackPanel DockPanel.Dock="Top">
-            <Menu>
-                <MenuItem Header="文件">
-                    <MenuItem Header="打开" Command="{Binding OpenFileCommand}" HotKey="Ctrl+O" />
-                    <MenuItem Header="保存" Command="{Binding SaveFileCommand}" HotKey="Ctrl+S" />
-                    <!-- <MenuItem Header="另存为" /> -->
-                </MenuItem>
-                <MenuItem Header="设置" Click="OpenSettings" />
-            </Menu>
-            <Grid>
-                <Button
-                    Content=""
-                    Background="Transparent"
-                    Margin="10,0,0,0"
-                    Foreground="SeaGreen"
-                    FontFamily="{StaticResource ConsolasNf}"
-                    FontSize="18"
-                    FontWeight="ExtraBold"
-                    Command="{Binding ExecuteScriptCommand}"
-                    HotKey="F5" />
-                <Button HorizontalAlignment="Right" Content="Copilot" Command="{Binding SwitchCopilotExpanderCommand}" />
-            </Grid>
-        </StackPanel>
-        <Grid DockPanel.Dock="Bottom">
-            <TextBlock Text="{Binding TimeConsumed, StringFormat='耗时 {0}s'}" />
-            <Grid>
-                <!-- <TextBlock Text="11" /> -->
-                <Slider
-                    HorizontalAlignment="Right"
-                    Value="{Binding FontSize}"
-                    Minimum="0.5"
-                    Maximum="30"
-                    Width="100"
-                    Margin="0,0,20,0" />
-            </Grid>
-        </Grid>
-        <Grid ColumnDefinitions="6*,Auto,3*,Auto,Auto">
-            <ScrollViewer>
+    <Panel Background="Transparent">
+        <Image Source="{Binding BackgroundImage}" Stretch="UniformToFill" Opacity="{Binding Opacity}" />
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Top">
+                <Border BorderThickness="0,0,0,4" BorderBrush="#40000000">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="20" Color="Gray" Opacity="0.8" />
+                    </Border.Effect>
+                    <Menu>
+                        <MenuItem Header="文件">
+                            <MenuItem Header="打开" Command="{Binding OpenFileCommand}" HotKey="Ctrl+O" />
+                            <MenuItem Header="保存" Command="{Binding SaveFileCommand}" HotKey="Ctrl+S" />
+                            <!-- <MenuItem Header="另存为" /> -->
+                        </MenuItem>
+                        <MenuItem Header="设置" Click="OpenSettings" />
+                    </Menu>
+                </Border>
                 <Grid>
-                    <!--  <TextBlock  -->
-                    <!--  Grid.Column="0"  -->
-                    <!--  Name="LineNumberBlock"  -->
-                    <!--  Text="{Binding LineNumberString}"  -->
-                    <!--  HorizontalAlignment="Right"  -->
-                    <!--  Margin="0,7.5,0,0" />  -->
-                    <!-- <GridSplitter Grid.Column="1" /> -->
-                    <!-- <TextBox Name="CodeEditor" Grid.Column="2" Text="{Binding Code}" AcceptsReturn="True" /> -->
-
-                    <ae:TextEditor
-                        Grid.Column="0"
-                        Name="CodeEditor"
-                        Text=""
-                        ShowLineNumbers="True"
-                        SyntaxHighlighting="C#"
-                        TextChanged="CodeEditor_OnTextChanged"
-                        AttachedToVisualTree="CodeEditor_OnAttachedToVisualTree" />
+                    <Border Background="#33BCD5FF">
+                        <!-- <Border.Effect> -->
+                        <!--     <DropShadowEffect BlurRadius="2" Color="Gray" Opacity="0.8" /> -->
+                        <!-- </Border.Effect> -->
+                        <Button
+                            Content=""
+                            Background="Transparent"
+                            Margin="10,0,0,0"
+                            Foreground="SeaGreen"
+                            FontFamily="{StaticResource ConsolasNf}"
+                            FontSize="18"
+                            FontWeight="ExtraBold"
+                            Command="{Binding ExecuteScriptCommand}"
+                            HotKey="F5" />
+                    </Border>
+                    <!-- <Button HorizontalAlignment="Right" Content="Copilot" Command="{Binding SwitchCopilotExpanderCommand}" /> -->
                 </Grid>
-            </ScrollViewer>
-            <GridSplitter Grid.Column="1" />
-            <Grid Grid.Column="2">
-                <md:MarkdownScrollViewer Markdown="{Binding ScriptOutput}" />
+            </StackPanel>
+            <Grid DockPanel.Dock="Bottom">
+                <TextBlock Text="{Binding TimeConsumed, StringFormat='耗时 {0}s'}" VerticalAlignment="Center" FontSize="15" />
+                <Grid>
+                    <!-- <TextBlock Text="11" /> -->
+                    <Slider
+                        HorizontalAlignment="Right"
+                        Value="{Binding FontSize}"
+                        Minimum="0.5"
+                        Maximum="30"
+                        Width="100"
+                        Margin="0,0,20,0" />
+                </Grid>
             </Grid>
-            <GridSplitter Grid.Column="3" />
-            <DockPanel Grid.Column="4" IsVisible="{Binding IsCopilotExpanded}">
-                <StackPanel DockPanel.Dock="Bottom">
-                    <TextBox>Send</TextBox>
-                    <Button Content="发送" HorizontalAlignment="Right" />
-                </StackPanel>
-                <StackPanel>
-                    <Grid Margin="4,4,18,4">
-                        <Rectangle Stroke="Gray" Margin="-2" StrokeThickness="2" Fill="Transparent" />
-                        <TextBlock Text="Sample" />
+            <Border BorderThickness="0,2,0,5" BorderBrush="#20000000">
+                <Grid ColumnDefinitions="6*,Auto,3*,Auto,Auto">
+                    <ScrollViewer>
+                        <Grid>
+                            <ae:TextEditor
+                                Grid.Column="0"
+                                Name="CodeEditor"
+                                Text=""
+                                ShowLineNumbers="True"
+                                SyntaxHighlighting="C#"
+                                TextChanged="CodeEditor_OnTextChanged"
+                                AttachedToVisualTree="CodeEditor_OnAttachedToVisualTree" />
+                        </Grid>
+                    </ScrollViewer>
+                    <GridSplitter Grid.Column="1" />
+                    <Grid Grid.Column="2" Background="#20000000">
+                        <md:MarkdownScrollViewer Markdown="{Binding ScriptOutput}" />
                     </Grid>
-                </StackPanel>
-            </DockPanel>
-        </Grid>
-    </DockPanel>
+                    <!-- <GridSplitter Grid.Column="3" /> -->
+                    <!-- <DockPanel Grid.Column="4" IsVisible="{Binding IsCopilotExpanded}"> -->
+                    <!--     <StackPanel DockPanel.Dock="Bottom"> -->
+                    <!--         <TextBox>Send</TextBox> -->
+                    <!--         <Button Content="发送" HorizontalAlignment="Right" /> -->
+                    <!--     </StackPanel> -->
+                    <!--     <StackPanel> -->
+                    <!--         <Grid Margin="4,4,18,4"> -->
+                    <!--             <Rectangle Stroke="Gray" Margin="-2" StrokeThickness="2" Fill="Transparent" /> -->
+                    <!--             <TextBlock Text="Sample" /> -->
+                    <!--         </Grid> -->
+                    <!--     </StackPanel> -->
+                    <!-- </DockPanel> -->
+                </Grid>
+            </Border>
+        </DockPanel>
+    </Panel>
 </Window>

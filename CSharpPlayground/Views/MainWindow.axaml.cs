@@ -12,6 +12,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        Application.Current.DataContext = this;
     }
 
 
@@ -34,7 +35,7 @@ public partial class MainWindow : Window
     }
 
     #endregion
-    
+
     /// <summary>
     /// 全局快捷键处理
     /// </summary>
@@ -63,14 +64,25 @@ public partial class MainWindow : Window
             #endregion
         }
     }
-    
+
+    private Setting? _settingWindow;
+
     protected void OpenSettings(object? sender, RoutedEventArgs e)
     {
-        var settingWindow = new Setting()
+        if (_settingWindow == null)
         {
-            DataContext = this.DataContext
-        };
-        settingWindow.Show();
+            _settingWindow = new Setting()
+            {
+                DataContext = this.DataContext
+            };
+            _settingWindow.Closed += (s, args) => _settingWindow = null;
+            _settingWindow.Show();
+        }
+        else
+        {
+            _settingWindow.Activate();
+        }
+
         e.Handled = true;
     }
 }
