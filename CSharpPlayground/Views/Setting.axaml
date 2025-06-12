@@ -6,12 +6,16 @@
     xmlns:vm="using:CSharpPlayground.ViewModels"
     mc:Ignorable="d"
     Width="500"
-    Height="400"
+    Height="220"
+    MaxHeight="220"
+    MaxWidth="500"
     d:DesignWidth="500"
-    d:DesignHeight="400"
+    d:DesignHeight="220"
     x:Class="CSharpPlayground.Views.Setting"
-    Title="Setting"
-    x:DataType="vm:MainWindowViewModel">
+    Title="设置"
+    x:DataType="vm:MainWindowViewModel"
+    TransparencyLevelHint="AcrylicBlur"
+    Background="{Binding WindowOpacityBrush}">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
@@ -23,30 +27,68 @@
             <Setter Property="Margin" Value="20,0,20,0" />
         </Style>
     </Window.Styles>
-    <StackPanel>
-        <Grid ColumnDefinitions="3*,*,5*">
-            <TextBlock Grid.Column="0" Text="透明度" VerticalAlignment="Center" />
-            <Slider
-                Grid.Column="2"
-                Maximum="1"
-                Minimum="0"
-                Width="100"
-                Value="{Binding Opacity}"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Left" />
-            <TextBlock Grid.Column="1" Text="{Binding Opacity, StringFormat='F2'}" VerticalAlignment="Center" HorizontalAlignment="Left" />
-        </Grid>
-        <Grid ColumnDefinitions="3*,*,5*">
-            <TextBlock Grid.Column="0" Text="字体大小" VerticalAlignment="Center" />
-            <Slider
-                Grid.Column="2"
-                Maximum="30"
-                Minimum="0.5"
-                Width="100"
-                Value="{Binding FontSize}"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Left" />
-            <TextBlock Grid.Column="1" Text="{Binding FontSize, StringFormat='F2'}" VerticalAlignment="Center" HorizontalAlignment="Left" />
-        </Grid>
-    </StackPanel>
+
+    <Panel Background="Transparent">
+        <Image Source="{Binding BackgroundImage}" Opacity="{Binding Opacity}" Stretch="UniformToFill" />
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="10">
+                <Grid ColumnDefinitions="3*,*,5*">
+                    <TextBlock Grid.Column="0" Text="字体大小" VerticalAlignment="Center" />
+                    <Slider
+                        Grid.Column="2"
+                        Maximum="30"
+                        Minimum="0.5"
+                        Width="100"
+                        Value="{Binding FontSize}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="1" Text="{Binding FontSize, StringFormat='F2'}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                </Grid>
+                <Grid ColumnDefinitions="3*,*,5*">
+                    <TextBlock Grid.Column="0" Text="窗口不透明度" VerticalAlignment="Center" />
+                    <Slider
+                        Grid.Column="2"
+                        Maximum="1"
+                        Minimum="0"
+                        Width="100"
+                        Value="{Binding WindowOpacity}"
+                        ValueChanged="RangeBase_OnValueChanged"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="1" Text="{Binding WindowOpacity, StringFormat='F2'}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                </Grid>
+                <Grid ColumnDefinitions="3*,5*,*">
+                    <TextBlock Grid.Column="0" Text="背景图" VerticalAlignment="Center" />
+                    <TextBox
+                        Name="ImagePathTextBox"
+                        Grid.Column="1"
+                        Text="{Binding BackgroundImagePath}"
+                        TextChanged="TextBox_OnTextChanged"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Width="250" />
+                    <Button
+                        Grid.Column="2"
+                        Content="_浏览"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Command="{Binding ChooseBackgroundImageCommand}" />
+                </Grid>
+                <Grid ColumnDefinitions="3*,*,5*">
+                    <TextBlock Grid.Column="0" Text="背景图不透明度" VerticalAlignment="Center" />
+                    <Slider
+                        Grid.Column="2"
+                        Maximum="1"
+                        Minimum="0"
+                        Width="100"
+                        Value="{Binding Opacity}"
+                        ValueChanged="RangeBase_OnValueChanged"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="1" Text="{Binding Opacity, StringFormat='F2'}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Panel>
+
 </Window>

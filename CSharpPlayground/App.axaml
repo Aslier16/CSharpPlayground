@@ -2,7 +2,9 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     x:Class="CSharpPlayground.App"
+    x:DataType="vm:MainWindowViewModel"
     xmlns:local="using:CSharpPlayground"
+    xmlns:vm="using:CSharpPlayground.ViewModels"
     RequestedThemeVariant="Default">
     <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
 
@@ -12,10 +14,19 @@
 
     <Application.Resources>
         <FontFamily x:Key="ConsolasNf">avares://CSharpPlayground/Assets/Fonts/ConsolasNerdFontMono-Regular.ttf#Consolas Nerd Font Mono</FontFamily>
+        <FontFamily x:Key="SarasaUiCL">avares://CSharpPlayground/Assets/Fonts/Sarasa-UI-CL-Bold.ttf#Sarasa UI CL</FontFamily>
     </Application.Resources>
+
+    <Application.DataContext>
+        <vm:MainWindowViewModel />
+    </Application.DataContext>
 
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+        <Style Selector="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource SarasaUiCL}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
     </Application.Styles>
 </Application>

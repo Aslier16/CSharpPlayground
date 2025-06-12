@@ -78,12 +78,16 @@ public static class PlaygroundExtension
     public static IEnumerable<T> Dump<T>(this IEnumerable<T> input)
     {
         var sb = new StringBuilder();
+        sb.AppendLine("| Index | Value |" + Environment.NewLine + "|-------|-------|");
+        int index = 0;
         using (var enumerator = input.GetEnumerator())
         {
-            sb.Append(enumerator.Current + " ");
+            sb.AppendLine($"| {index} | {enumerator.Current} |");
+            ++index;
             while (enumerator.MoveNext())
             {
-                sb.Append(" " + enumerator.Current);
+                sb.AppendLine($"| {index} | {enumerator.Current} |");
+                ++index;
             }
         }
 
