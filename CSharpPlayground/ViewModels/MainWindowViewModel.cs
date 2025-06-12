@@ -21,18 +21,14 @@ public partial class MainWindowViewModel : ViewModelBase
                                                 var list = new List<int> { 1, 2, 3, 4, 5 };
                                                 list.Dump();
                                                 """;
-    [ObservableProperty] private string _lineNumberString = "1\n2\n3\n4";
     [ObservableProperty] private string _scriptOutput = "";
     [ObservableProperty] private bool _isCopilotExpanded = false;
     [ObservableProperty] private double _timeConsumed = 0;
-    [ObservableProperty] private double _fontSize = 14;
+
     
-    partial void OnCodeChanged(string value)
-    {
-        // 计算行号
-        var lines = value.Split('\n');
-        LineNumberString = string.Join("\n", Enumerable.Range(1, lines.Length).Select(i => i.ToString()));
-    }
+    [ObservableProperty] private double _fontSize = 14;
+    [ObservableProperty] private double _opacity = 1.0;
+    
 
     [RelayCommand]
     private async Task OpenFileAsync()
