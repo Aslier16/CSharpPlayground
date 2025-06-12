@@ -36,11 +36,13 @@
                     <MenuItem Header="保存" Command="{Binding SaveFileCommand}" HotKey="Ctrl+S" />
                     <!-- <MenuItem Header="另存为" /> -->
                 </MenuItem>
+                <MenuItem Header="设置" Click="OpenSettings" />
             </Menu>
             <Grid>
                 <Button
                     Content=""
                     Background="Transparent"
+                    Margin="10,0,0,0"
                     Foreground="SeaGreen"
                     FontFamily="{StaticResource ConsolasNf}"
                     FontSize="18"
@@ -57,7 +59,7 @@
                 <Slider
                     HorizontalAlignment="Right"
                     Value="{Binding FontSize}"
-                    Minimum="1"
+                    Minimum="0.5"
                     Maximum="30"
                     Width="100"
                     Margin="0,0,20,0" />
@@ -87,16 +89,6 @@
             </ScrollViewer>
             <GridSplitter Grid.Column="1" />
             <Grid Grid.Column="2">
-                <!-- <ScrollViewer> -->
-                <!--    -->
-                <!--  <TextBox  -->
-                <!--  Text="{Binding ScriptOutput}"  -->
-                <!--  Background="#FFE4EEFF"  -->
-                <!--  IsReadOnly="True"  -->
-                <!--  BorderThickness="0"  -->
-                <!--  IsTabStop="False"  -->
-                <!--  AcceptsReturn="True" />  -->
-                <!-- </ScrollViewer> -->
                 <md:MarkdownScrollViewer Markdown="{Binding ScriptOutput}" />
             </Grid>
             <GridSplitter Grid.Column="3" />
