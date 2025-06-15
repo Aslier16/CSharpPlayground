@@ -16,7 +16,8 @@
     Icon="/Assets/avalonia-logo.ico"
     Title="CSharpPlayground"
     TransparencyLevelHint="AcrylicBlur"
-    Background="{Binding WindowOpacityBrush}">
+    Background="{Binding WindowOpacityBrush}"
+    Closing="Window_OnClosing">
 
     <Design.DataContext>
         <!--

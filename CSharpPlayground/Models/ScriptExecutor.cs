@@ -9,8 +9,6 @@ using Microsoft.CodeAnalysis.Scripting;
 
 namespace CSharpPlayground.Models;
 
-
-
 public class ScriptExecutor
 {
     public static async Task<string> ExecuteScript(string code)
@@ -30,9 +28,9 @@ public class ScriptExecutor
             try
             {
                 var options = ScriptOptions.Default
-                    .WithReferences(AppDomain.CurrentDomain.GetAssemblies().Where(x=> !x.IsDynamic && !string.IsNullOrEmpty(x.Location)))
-                    .WithImports("System", "System.Linq", "System.Collections.Generic", "CSharpPlayground.Models");
-
+                    .WithReferences(AppDomain.CurrentDomain.GetAssemblies()
+                        .Where(x => !x.IsDynamic && !string.IsNullOrEmpty(x.Location)))
+                    .WithImports("System", "System.Linq", "System.Collections.Generic", "System.IO", "CSharpPlayground.Models");
                 var script = CSharpScript.Create(code, options);
                 var result = script.RunAsync().GetAwaiter().GetResult();
 
@@ -44,6 +42,7 @@ public class ScriptExecutor
                 {
                     output = consoleResult;
                 }
+                
 
                 // 如果有返回值且没有控制台输出，则使用返回值
                 if (result.ReturnValue != null && string.IsNullOrEmpty(output))
@@ -69,6 +68,7 @@ public class ScriptExecutor
         {
             output = $"执行错误: {ex.Message}";
         }
+
         return output;
     }
 }

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -37,6 +38,19 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty] private string _backgroundImagePath = "";
     [ObservableProperty] private Bitmap? _backgroundImage;
+
+    public MainWindowViewModel()
+    {
+        var configPath = Path.Combine(Directory.GetCurrentDirectory(), "UserConfig.json");
+        if (File.Exists(configPath))
+        {
+            var config = JsonSerializer.Deserialize<UserConfig>(File.ReadAllText(configPath));
+            if (config is not null)
+            {
+                SetUserConfig(config);
+            }
+        }
+    }
     
     [RelayCommand]
     private async Task ChooseBackgroundImage()
@@ -148,4 +162,31 @@ public partial class MainWindowViewModel : ViewModelBase
 
         return null;
     }
+
+    public UserConfig SaveUserConfig()
+    {
+        return new UserConfig()
+        {
+            FontSize = FontSize,
+            WindowOpacity = WindowOpacity,
+            BackgroundImagePath = BackgroundImagePath,
+            Opacity = Opacity
+        };
+    }
+    
+    private void SetUserConfig(UserConfig config)
+    {
+        FontSize = config.FontSize;
+        WindowOpacity = config.WindowOpacity;
+        BackgroundImagePath = config.BackgroundImagePath;
+        Opacity = config.Opacity;
+    }
+}
+
+public class UserConfig
+{
+    public double FontSize { get; set; } = 20;
+    public double WindowOpacity { get; set; } = 1;
+    public string BackgroundImagePath { get; set; } = "";
+    public double Opacity { get; set; } = 0.2;
 }
