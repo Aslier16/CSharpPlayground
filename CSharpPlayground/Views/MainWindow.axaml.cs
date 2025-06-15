@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Text.Json;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -84,5 +86,23 @@ public partial class MainWindow : Window
         }
 
         e.Handled = true;
+    }
+
+    private void Window_OnClosing(object? sender, WindowClosingEventArgs e)
+    {
+        if (_settingWindow is not null)
+        {
+            e.Cancel = true;
+            _settingWindow.Activate();
+        }
+
+        if (e.Cancel == false)
+        {
+            if (DataContext is MainWindowViewModel vm)
+            {
+                var config = vm.SaveUserConfig();
+                File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "UserConfig.json"),JsonSerializer.Serialize(config));
+            }
+        }
     }
 }
