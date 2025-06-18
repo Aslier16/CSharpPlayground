@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using CSharpPlayground.ViewModels;
 
 namespace CSharpPlayground.Views;
@@ -105,4 +106,5 @@ public partial class MainWindow : Window
             }
         }
     }
+    
 }

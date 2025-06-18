@@ -6,11 +6,11 @@
     xmlns:vm="using:CSharpPlayground.ViewModels"
     mc:Ignorable="d"
     Width="500"
-    Height="220"
-    MaxHeight="220"
+    Height="270"
+    MaxHeight="300"
     MaxWidth="500"
     d:DesignWidth="500"
-    d:DesignHeight="220"
+    d:DesignHeight="270"
     x:Class="CSharpPlayground.Views.Setting"
     Title="设置"
     x:DataType="vm:MainWindowViewModel"
@@ -86,6 +86,16 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left" />
                     <TextBlock Grid.Column="1" Text="{Binding Opacity, StringFormat='F2'}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                </Grid>
+                <Grid ColumnDefinitions="3*,5*,*">
+                    <TextBlock Grid.Column="0" Text="DeepseekAPIToken" VerticalAlignment="Center" />
+                    <TextBox
+                        Name="CopilotApiTokenTextBox"
+                        Grid.Column="1"
+                        Text="{Binding DeepseekApiToken}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Width="250" />
                 </Grid>
             </StackPanel>
         </ScrollViewer>

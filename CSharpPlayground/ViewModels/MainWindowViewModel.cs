@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -38,6 +39,10 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty] private string _backgroundImagePath = "";
     [ObservableProperty] private Bitmap? _backgroundImage;
+
+    [ObservableProperty] private string _copilotInput = string.Empty;
+    [ObservableProperty] private string _copilotOutput = string.Empty;
+    [ObservableProperty] private string _deepseekApiToken = string.Empty;
 
     public MainWindowViewModel()
     {
@@ -148,6 +153,39 @@ public partial class MainWindowViewModel : ViewModelBase
         stopwatch.Stop();
         TimeConsumed = stopwatch.Elapsed.TotalSeconds;
     }
+    
+    [RelayCommand]
+    private async Task SendToCopilotAsync()
+    {
+        if (string.IsNullOrWhiteSpace(CopilotInput))
+        {
+            // CopilotOutput = "请输入内容";
+            return;
+        }
+        // CopilotOutput = "正在请求 Copilot...";
+        try
+        {
+            var deepseek = new DeepseekRequest();
+            var responseJson = await deepseek.SendRequest(CopilotInput, DeepseekApiToken);
+            var response = JsonSerializer.Deserialize<Response>(responseJson);
+            if (response != null && response.choices != null && response.choices.Length > 0)
+            {
+                CopilotOutput += Environment.NewLine+Environment.NewLine+response.choices[0].message.content;
+            }
+            else
+            {
+                CopilotOutput += Environment.NewLine+Environment.NewLine+"未获取到有效回复。";
+            }
+        }
+        catch (Exception ex)
+        {
+            CopilotOutput = $"{Environment.NewLine+Environment.NewLine}请求失败: {ex.Message}";
+        }
+        finally
+        {
+            CopilotInput = string.Empty;
+        }
+    }
 
     private async Task<IReadOnlyList<IStorageFile>> OpenFilePicker(FilePickerOpenOptions options)
     {
@@ -170,7 +208,8 @@ public partial class MainWindowViewModel : ViewModelBase
             FontSize = FontSize,
             WindowOpacity = WindowOpacity,
             BackgroundImagePath = BackgroundImagePath,
-            Opacity = Opacity
+            Opacity = Opacity,
+            DeepseekApiToken = DeepseekApiToken
         };
     }
     
@@ -180,6 +219,7 @@ public partial class MainWindowViewModel : ViewModelBase
         WindowOpacity = config.WindowOpacity;
         BackgroundImagePath = config.BackgroundImagePath;
         Opacity = config.Opacity;
+        DeepseekApiToken = config.DeepseekApiToken;
     }
 }
 
@@ -189,4 +229,6 @@ public class UserConfig
     public double WindowOpacity { get; set; } = 1;
     public string BackgroundImagePath { get; set; } = "";
     public double Opacity { get; set; } = 0.2;
+    
+    public string DeepseekApiToken { get; set; } = string.Empty;
 }
