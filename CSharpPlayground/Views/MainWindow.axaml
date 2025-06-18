@@ -66,7 +66,7 @@
                             Command="{Binding ExecuteScriptCommand}"
                             HotKey="F5" />
                     </Border>
-                    <!-- <Button HorizontalAlignment="Right" Content="Copilot" Command="{Binding SwitchCopilotExpanderCommand}" /> -->
+                    <Button HorizontalAlignment="Right" Content="Copilot" Command="{Binding SwitchCopilotExpanderCommand}" />
                 </Grid>
             </StackPanel>
             <Grid DockPanel.Dock="Bottom">
@@ -100,21 +100,27 @@
                     <Grid Grid.Column="2" Background="#20000000">
                         <md:MarkdownScrollViewer Markdown="{Binding ScriptOutput}" />
                     </Grid>
-                    <!-- <GridSplitter Grid.Column="3" /> -->
-                    <!-- <DockPanel Grid.Column="4" IsVisible="{Binding IsCopilotExpanded}"> -->
-                    <!--     <StackPanel DockPanel.Dock="Bottom"> -->
-                    <!--         <TextBox>Send</TextBox> -->
-                    <!--         <Button Content="发送" HorizontalAlignment="Right" /> -->
-                    <!--     </StackPanel> -->
-                    <!--     <StackPanel> -->
-                    <!--         <Grid Margin="4,4,18,4"> -->
-                    <!--             <Rectangle Stroke="Gray" Margin="-2" StrokeThickness="2" Fill="Transparent" /> -->
-                    <!--             <TextBlock Text="Sample" /> -->
-                    <!--         </Grid> -->
-                    <!--     </StackPanel> -->
-                    <!-- </DockPanel> -->
+                    <GridSplitter Grid.Column="3" />
+                    <DockPanel Grid.Column="4" IsVisible="{Binding IsCopilotExpanded}">
+                        <StackPanel DockPanel.Dock="Bottom">
+                            <TextBox Name="CopilotTextBox" Text="{Binding CopilotInput}" />
+                            <Button Content="发送" HorizontalAlignment="Right" Command="{Binding SendToCopilotCommand}" />
+                        </StackPanel>
+                        <Grid>
+                            <!-- <Rectangle Stroke="Gray" Margin="-2" StrokeThickness="2" Fill="Transparent" /> -->
+                            <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top">
+                                <TextBlock
+                                    Margin="4"
+                                    Text="{Binding CopilotOutput}"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    TextWrapping="Wrap" />
+                            </ScrollViewer>
+                        </Grid>
+                    </DockPanel>
                 </Grid>
             </Border>
         </DockPanel>
     </Panel>
 </Window>
+
